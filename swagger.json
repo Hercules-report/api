@@ -1,0 +1,119 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a pre-release documentation of the furture Hercules.report API, for comments. This documentation is generated from a Swagger (Open API) file.",
+    "version": "0.0.1",
+    "title": "Hercules.report API",
+    "termsOfService": "https://www.hercules.report/doc",
+    "contact": {
+      "email": "contact@hercules.report"
+    }
+  },
+  "host": "api.hercules.report",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "products",
+      "description": "Information about products and monitoring information from stores"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Retrieve all products",
+        "description": "Returns information about all products, including the monitoring information from active stores",
+        "operationId": "get_products",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Product" }
+            }
+          }
+        }
+      }
+    },
+    "/products/{identifier}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Find a specific product",
+        "description": "Returns the product information and monitored data from active stores",
+        "operationId": "get_product",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "description": "One of the identifier (ISBN or EAN) associated with the product",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "400": {
+            "description": "Invalid identifier supplied"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "description": "The API key is provided in your organisation profile.",
+      "in": "query"
+    }
+  },
+  "security": [
+    "api_key": []
+  ],
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Hercules.report",
+    "url": "https://www.hercules.report"
+  }
+}

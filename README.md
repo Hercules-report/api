@@ -1,2 +1,3 @@
 # api
-Hercules.report API related documents
+
+Hercules.report API related documents. 
