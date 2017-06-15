@@ -33,7 +33,14 @@
           "application/json"
         ],
         "parameters": [
-
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Defaults to 1. Results are paginated, and the information about the number of pages and the number of items per page will be available in the response header.",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
         ],
         "responses": {
           "200": {
@@ -99,15 +106,84 @@
     "Product": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "identifier": {
-          "type": "string"
-        },
+        "identifiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "identifier_type": {
+                "type": "string",
+                "description": "The type of identifier.",
+                "enum": [default, ebook, alt_ebook, paper, alt_paper]
+                },
+              "value": {
+                "type": "string",
+                "description": "The identifier (EAN, ISBN) itself.",
+                "example": "9781169289864"
+                }
+              }
+            }
+          },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name / title of the book.",
+          "example": "The Mysterious Affair at Styles"
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "monitoring_frequency": {
+              "type": "string",
+              "description": "Product monitoring frequency",
+              "enum": [daily, weekly, monthly, never]
+            }
+          }
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "store": {
+                "type": "string",
+                "description": "Store code, including 2-letter country code.",
+                "example": "apple_fr"
+              },
+              "monitoring_time": {
+                "type": "string",
+                "description": "The date and time on which the store was monitored for that product. Format is ISO-8601.",
+                "example": "2017-06-15T16:41:22-04:00"
+              },
+              "status": {
+                "type": "string",
+                "description": "The product status on that store.",
+                "enum": [found, not_found, unknown]
+              },
+              "prices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "format": {
+                      "type": "string",
+                      "description": "The format to which the price applies",
+                      "enum": [paperback, hardcover, ebook]
+                    },
+                    "amount": {
+                      "type": "number",
+                      "description": "Price amount",
+                      "example": "9.99"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "Price 3-letter currency code",
+                      "example": "EUR"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
